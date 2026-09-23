@@ -1,0 +1,16 @@
+# Ren'Py 运行时产物
+*.rpyc
+*.rpymc
+*.save
+cache/
+saves/
+game/saves/
+errors.txt
+log.txt
+traceback.txt
+lint.txt
+steam_appid.txt
+
+# 系统文件
+Thumbs.db
+.DS_Store
