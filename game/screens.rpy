@@ -46,19 +46,26 @@ screen main_menu_title():
             size 15
             color "#5A6068"
 
-    vbox:
+    hbox:
         xalign 0.5
-        yalign 0.66
-        spacing 16
+        yalign 0.76
+        spacing 36
 
-        textbutton "开始游戏":
-            action Start("mode_select")
-        textbutton "读取存档":
-            action ShowMenu("load")
-        textbutton "设置":
-            action ShowMenu("preferences")
-        textbutton "退出游戏":
-            action Quit(confirm=False)
+        vbox:
+            spacing 16
+
+            textbutton "开始游戏":
+                action Start("mode_select")
+            textbutton "读取存档":
+                action ShowMenu("load")
+
+        vbox:
+            spacing 16
+
+            textbutton "设置":
+                action ShowMenu("preferences")
+            textbutton "退出游戏":
+                action Quit(confirm=False)
 
     text "v[config.version]":
         xalign 0.98
@@ -78,7 +85,7 @@ style title_button_text:
     size 24
     color "#EAEAEA"
     hover_color "#FFFFFF"
-    xalign 0.0
+    xalign 0.5
 
 
 ################################################################################
