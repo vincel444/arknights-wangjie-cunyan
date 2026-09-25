@@ -1,6 +1,6 @@
 # 明日方舟：妄界存言
 
-非官方同人剧情 AVG（文字冒险游戏），基于 [Ren'Py](https://www.renpy.org/) 开发。
+非官方同人剧情 AVG（文字冒险游戏），基于 [Ren'Py](https://www.renpy.org/) 8.5.3 开发。
 
 > **免责声明**：《明日方舟》(Arknights) 是上海鹰角网络科技有限公司 (Hypergryph) 的注册商标。
 > 本项目为非商业盈利性同人作品，仅供学习与交流使用。所有《明日方舟》相关版权、商标及素材均归鹰角网络所有。
@@ -16,29 +16,49 @@
 | 故事集 | 🚧 占位 | 活动故事 / 短篇集 / 世界观补充阅读 |
 | 时间线 | 🚧 占位 | 泰拉纪年 / 大事件年表 / 剧情节点回溯 |
 
+## 系统功能
+
+- **对话演出**：深色半透明对话框、左侧强调色姓名条、打字机效果、点击继续指示器（▼ 呼吸动画）
+- **快捷工具栏**：游戏中常驻底栏——回退 / 隐藏 / 自动 / 快进 / 存档 / 读档 / 历史 / 设置 / 标题
+- **存读档**：6 格手动存档 + 自动存档页，带缩略图与时间戳
+- **设置**：文字速度、自动前进间隔、音乐 / 音效 / 语音音量、窗口全屏切换、跳过未读文本
+- **历史记录**：可回看全部已读对话
+- **Esc / 鼠标右键**：随时唤起游戏内菜单
+
 ## 本地运行
 
-1. 安装 [Ren'Py 8.5.3+ SDK](https://www.renpy.org/download.html)（本项目基于 8.5.3 开发）
-2. 用 Ren'Py 启动器打开本目录，或命令行直启：
+1. 安装 [Ren'Py 8.5.3+ SDK](https://www.renpy.org/download.html)
+2. 双击 `run.bat`（默认读取 `F:\bian\renpy\renpy-8.5.3-sdk`，SDK 在别处请设环境变量 `RENPY_SDK`）
+3. 或命令行直启：
 
 ```bash
 <renpy-sdk>/lib/py3-windows-x86_64/renpy.exe <本项目路径>
 ```
+
+**脚本校验**：双击 `lint.bat`，或命令行 `renpy.exe <本项目路径> lint`
 
 ## 项目结构
 
 ```
 arknights-avg/
 ├── game/
-│   ├── script.rpy        # 主脚本：配置、字体、角色定义、主线章节
-│   ├── screens.rpy       # UI 屏幕：标题、模式选择、角色列表、确认弹窗、结束卡
-│   ├── chara_story.rpy   # 角色剧情模块（每角色一条线，命名 ch_<拼音>_01）
-│   └── fonts/msyh.ttc    # 中文字体（微软雅黑）
+│   ├── options.rpy        # 引擎配置：画面、存档、缩略图、全局字体
+│   ├── characters.rpy     # 角色定义、点击继续指示器、全局状态变量
+│   ├── script.rpy         # 主流程：标题 → 模式选择 → 各模式入口 → 主线章节
+│   ├── chara_story.rpy    # 角色剧情模块（每角色一条线）
+│   ├── screens.rpy        # 导航层：标题、模式选择、角色列表、确认弹窗、结束卡
+│   ├── ui_extra.rpy       # 演出层：对话框、姓名条、选项按钮、快捷工具栏
+│   ├── menu_screens.rpy   # 菜单层：游戏菜单、存读档、设置、历史记录
+│   └── fonts/msyh.ttc     # 中文字体（微软雅黑）
+├── run.bat / lint.bat     # 一键启动 / 校验脚本
 └── README.md
 ```
 
 ## 开发约定
 
-- 主线章节放在 `script.rpy`，角色剧情放 `chara_story.rpy`
-- 新增角色剧情：`chara_story_list` 加按钮 + `chara_story.rpy` 加 `ch_<角色拼音>_01` 标签
-- 所有剧情结束统一走 `end_card` 结束卡标签回导航
+- **新增主线章节**：在 `script.rpy` 加 `label ch<N>_<名称>`，从 `chapter_select` 挂载
+- **新增角色剧情**：`screens.rpy` 的 `chara_story_list` 加按钮 + `chara_story.rpy` 加 `ch_<角色拼音>_01` 标签
+- **新增角色定义**：`characters.rpy` 加 `define`，统一带 `ctc="ctc_arrow"`
+- **文本结束**：统一用 `call end_card("...")` 收尾并回到导航
+- **视觉风格**：固定深色底（#0B0D10 / #12151A）+ 主文字 #E8E8E8 + 次级文字 #8A9099 + 强调 #7FB3D5
+- **提交前**：跑 `lint.bat` 确保无错误

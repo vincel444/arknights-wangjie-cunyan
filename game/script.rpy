@@ -1,50 +1,9 @@
 # ============================================================
-# 明日方舟同人剧情 AVG - 主脚本
-# 结构：init 配置 → 角色定义 → 章节调度 → 第一章（垂直切片）
+# 明日方舟：妄界存言 · 主流程
+# 配置见 options.rpy ｜ 角色见 characters.rpy ｜ UI 见 screens.rpy / ui_extra.rpy
 # ============================================================
 
-# ---------- 基础配置 ----------
-define config.name = _("明日方舟：妄界存言")
-define gui.show_name = True
-define config.version = "0.1.0"
-define gui.about = _("\n非官方同人作品。《明日方舟》版权归鹰角网络所有。\n本作品为非商业同人创作，仅供学习交流。")
-define build.name = "WangjieCunyan"
-
-# 窗口图标暂缺，接入美术素材后再配置：define config.window_icon = "gui/window_icon.png"
-define config.has_autosave = True
-define config.autosave_slots = 3
-define config.layers = [ 'master', 'transient', 'screens', 'overlay', 'front' ]
-
-# 1280x720 起步，方舟剧情界面是 16:9
-define config.screen_width = 1280
-define config.screen_height = 720
-
-# ---------- 字体：默认 DejaVuSans 无中文字形，全局替换为微软雅黑 ----------
-# 手搓骨架不走 gui.init 模板构建，gui.* 变量不生效，改用样式层直接覆盖：
-style default:
-    font "fonts/msyh.ttc"
-
-# 替换映射：兜底所有引用 DejaVuSans 的内置样式（界面按钮/输入框/菜单等）
-# 注意：值必须是 (字体, 粗体, 斜体) 三元组，不能只写字符串
-define config.font_replacement_map = {
-    ("DejaVuSans.ttf", False, False): ("fonts/msyh.ttc", False, False),
-    ("DejaVuSans.ttf", True, False): ("fonts/msyh.ttc", True, False),
-    ("DejaVuSans.ttf", False, True): ("fonts/msyh.ttc", False, True),
-    ("DejaVuSans.ttf", True, True): ("fonts/msyh.ttc", True, True),
-}
-
-# ---------- 角色定义（占位，后续按正式剧本补全） ----------
-# who=None 是旁白；颜色后续与干员主题色对齐
-define a = Character(_("阿米娅"), color="#64C1E8", who_outlines=[(1, "#00000080")])
-define k = Character(_("凯尔希"), color="#5DBB6B", who_outlines=[(1, "#00000080")])
-define d = Character(_("博士"), color="#E0E0E0", who_outlines=[(1, "#00000080")])
-define n = Character(None, what_color="#DDDDDD", what_outlines=[(1, "#00000080")])
-
-# ---------- 游戏状态（章节/好感等全局变量） ----------
-default chapter = 1
-default trust_akamiya = 0   # 占位：角色信赖值，供分支使用
-
-# ---------- 入口 ----------
+# ---------- 免责声明 ----------
 label splashscreen:
     scene black
     with Pause(0.5)
@@ -53,14 +12,15 @@ label splashscreen:
     hide text with dissolve
     return
 
+# ---------- 入口 ----------
 label start:
-    jump ch1_opening
+    jump mode_select
 
 # ---------- 标题主菜单（引擎 return 后回到这里） ----------
 label main_menu:
     call screen main_menu_title
 
-# ---------- 模式选择（开始游戏后进入） ----------
+# ---------- 模式选择 ----------
 label mode_select:
     call screen mode_select_menu
 
@@ -112,7 +72,7 @@ label chapter_select:
             jump mode_select
 
 # ============================================================
-# 第一章 · 垂直切片（占位剧本，验证流程与演出）
+# 第一章 · 垂直切片（占位剧本，等待正式剧本替换）
 # ============================================================
 label ch1_opening:
     scene black with fade
@@ -136,15 +96,10 @@ label ch1_opening:
     a "……那，晚安，博士。"
     hide amiya with dissolve
     scene black with fade
-    call ch1_end
+    call end_card("第一章 · 完")
     jump mode_select
 
-# 第一章结束卡：强制停留，点击后才返回
-label ch1_end:
-    call end_card("第一章 · 完")
-    return
-
-# 通用结束卡（章节 / 角色剧情共用）
+# ---------- 通用结束卡（章节 / 角色剧情共用） ----------
 label end_card(card_text):
     show screen chapter_end_card(card_text) with dissolve
     $ renpy.pause(1.5)

@@ -31,13 +31,23 @@ screen main_menu_title():
 
     vbox:
         xalign 0.5
-        yalign 0.68
-        spacing 18
+        yalign 0.66
+        spacing 16
 
         textbutton "开始游戏":
             action Start("mode_select")
+        textbutton "读取存档":
+            action ShowMenu("load")
+        textbutton "设置":
+            action ShowMenu("preferences")
         textbutton "退出游戏":
             action Quit(confirm=False)
+
+    text "v[config.version]":
+        xalign 0.98
+        yalign 0.97
+        size 14
+        color "#4A4F56"
 
 
 style title_button is confirm_button
