@@ -98,10 +98,10 @@ screen quick_menu():
     zorder 100
     style_prefix "quick"
 
+    # 置于右上角，避免遮挡对话框与立绘区的文字
     frame:
-        xalign 0.5
-        yalign 1.0
-        yoffset -4
+        xalign 0.99
+        yalign 0.02
         background Frame("gui_gen/quickbar.png", 8, 8)
         padding (14, 8)
 
@@ -117,6 +117,30 @@ screen quick_menu():
             textbutton "历史" action ShowMenu("history")
             textbutton "设置" action ShowMenu("preferences")
             textbutton "标题" action MainMenu()
+
+
+################################################################################
+# 状态提示（快进 / 自动播放），左上角，中文
+################################################################################
+
+screen play_state_indicator():
+    zorder 99
+
+    if config.skipping:
+        frame:
+            xalign 0.015
+            yalign 0.02
+            background Frame("gui_gen/quickbar.png", 8, 8)
+            padding (16, 8)
+            text "快进中 ▶▶" size 18 color "#E3B457"
+
+    elif preferences.afm_enable:
+        frame:
+            xalign 0.015
+            yalign 0.02
+            background Frame("gui_gen/quickbar.png", 8, 8)
+            padding (16, 8)
+            text "自动播放中" size 18 color "#7FB3D5"
 
 
 style quick_button:

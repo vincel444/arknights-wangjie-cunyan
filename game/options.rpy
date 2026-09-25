@@ -29,6 +29,24 @@ define config.layers = [ 'master', 'transient', 'screens', 'overlay', 'front' ]
 # 按 Esc/右键直接打开保存界面（左侧导航可切换到读档/设置/历史）
 define config.game_menu_action = ShowMenu("save")
 
+# 游戏中常驻的状态提示层（快进中 / 自动播放中）
+init python:
+    if "play_state_indicator" not in config.overlay_screens:
+        config.overlay_screens.append("play_state_indicator")
+
+    # 引擎内置提示语汉化（退出确认、覆盖存档、读档提示等）
+    layout.ARE_YOU_SURE = "确定吗？"
+    layout.DELETE_SAVE = "确定要删除这个存档吗？"
+    layout.OVERWRITE_SAVE = "确定要覆盖这个存档吗？"
+    layout.LOADING = "读取存档将丢失未保存的进度。\n确定要继续吗？"
+    layout.QUIT = "确定要退出游戏吗？"
+    layout.MAIN_MENU = "确定要返回标题画面吗？\n未保存的进度将丢失。"
+    layout.CONTINUE = "确定要从上次离开的地方继续吗？"
+    layout.END_REPLAY = "确定要结束回放吗？"
+    layout.SLOW_SKIP = "确定要开始快进阅读吗？"
+    layout.FAST_SKIP_SEEN = "确定要快进到下一个选项吗？"
+    layout.FAST_SKIP_UNSEEN = "确定要跳过未读文本，直达下一个选项吗？"
+
 # ---------- 默认偏好（新玩家首次进游戏的初值） ----------
 define config.default_text_cps = 45
 define config.default_afm_time = 12

@@ -37,9 +37,9 @@ screen main_menu_title():
             xalign 0.5
             add "gui_gen/rule.png"
 
-        text "ARKNIGHTS · FAN VISUAL NOVEL":
-            size 13
-            kerning 4
+        text "泰拉纪年 · 剧情向文字冒险":
+            size 17
+            kerning 6
             color C_MUTED
 
         text "非官方同人作品 · 仅供学习交流":
