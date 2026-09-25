@@ -1,33 +1,50 @@
 # ============================================================
-# 基础 UI 屏幕层（对照官方 gui 模板精简）
-# 后续方舟化视觉改造在此文件上进行
+# 导航层 UI：标题、模式选择、角色列表、结束卡、确认弹窗
+# 配色：深色底 + 琥珀色强调(#E3B457) + 冷灰蓝次级(#7FB3D5)
 # ============================================================
 
 define config.confirm_screen = True
 
+# ---------- 通用颜色 ----------
+define C_TEXT = "#EAEAEA"
+define C_MUTED = "#8A9099"
+define C_ACCENT = "#E3B457"
+define C_COOL = "#7FB3D5"
+define C_BG = "#0B0D10"
+
+
 ################################################################################
-# 主菜单（标题画面）
+# 标题画面
 ################################################################################
 
 screen main_menu_title():
     style_prefix "title"
 
-    add Solid("#0B0D10")
+    add "gui_gen/bg_main.png"
 
     vbox:
         xalign 0.5
-        yalign 0.38
-        spacing 20
+        yalign 0.28
+        spacing 12
 
         text "明日方舟：妄界存言":
+            size 64
+            kerning 5
+            color C_TEXT
+            outlines [ (3, "#00000080", 0, 0) ]
+
+        hbox:
             xalign 0.5
-            size 46
-            color "#E8E8E8"
+            add "gui_gen/rule.png"
+
+        text "ARKNIGHTS · FAN VISUAL NOVEL":
+            size 13
+            kerning 4
+            color C_MUTED
 
         text "非官方同人作品 · 仅供学习交流":
-            xalign 0.5
-            size 16
-            color "#8A8F98"
+            size 15
+            color "#5A6068"
 
     vbox:
         xalign 0.5
@@ -47,60 +64,109 @@ screen main_menu_title():
         xalign 0.98
         yalign 0.97
         size 14
-        color "#4A4F56"
+        color "#3A4048"
 
 
-style title_button is confirm_button
-style title_button_text is confirm_button_text
+style title_button:
+    xsize 300
+    xalign 0.5
+    background Frame("gui_gen/btn.png", 8, 8)
+    hover_background Frame("gui_gen/btn_hover.png", 8, 8)
+    padding (32, 16)
 
-# 章节结束卡
-screen chapter_end_card(chapter_text):
-    add Solid("#000000")
+style title_button_text:
+    size 24
+    color "#EAEAEA"
+    hover_color "#FFFFFF"
+    xalign 0.0
+
+
+################################################################################
+# 模式选择
+################################################################################
+
+screen mode_select_menu():
+    style_prefix "mode"
+
+    add "gui_gen/bg_main.png"
 
     vbox:
         xalign 0.5
-        yalign 0.45
-        spacing 28
+        yalign 0.16
+        spacing 10
 
-        text chapter_text:
+        text "选择模式":
+            size 38
+            kerning 4
+            color C_TEXT
+
+        hbox:
             xalign 0.5
-            size 40
-            color "#E8E8E8"
+            add "gui_gen/rule.png" xysize (240, 2)
 
-        text "未完待续":
-            xalign 0.5
-            size 22
-            color "#8A8F98"
-
-    text "点击继续":
+    hbox:
         xalign 0.5
-        yalign 0.92
-        size 14
-        color "#5A5F66"
+        yalign 0.5
+        spacing 100
+
+        vbox:
+            spacing 14
+
+            textbutton "主线模式":
+                action Return("main")
+            textbutton "角色剧情":
+                action Return("chara")
+            textbutton "干员档案":
+                action Return("archive")
+
+        vbox:
+            spacing 14
+
+            textbutton "故事集":
+                action Return("collection")
+            textbutton "时间线":
+                action Return("timeline")
+            textbutton "正在开发":
+                action Return("dev")
+
+    vbox:
+        xalign 0.5
+        yalign 0.88
+
+        textbutton "返回标题":
+            action Return("back")
+
+
+style mode_button is title_button
+style mode_button_text is title_button_text
+
 
 ################################################################################
 # 角色剧情 · 角色列表
 ################################################################################
 
 screen chara_story_list():
-    style_prefix "title"
+    style_prefix "mode"
 
-    add Solid("#0B0D10")
+    add "gui_gen/bg_main.png"
 
     vbox:
         xalign 0.5
-        yalign 0.18
-        spacing 12
+        yalign 0.16
+        spacing 10
 
         text "角色剧情":
+            size 38
+            kerning 4
+            color C_TEXT
+
+        hbox:
             xalign 0.5
-            size 34
-            color "#E8E8E8"
+            add "gui_gen/rule.png" xysize (240, 2)
 
         text "选择干员，阅读其个人剧情":
-            xalign 0.5
             size 15
-            color "#6E747C"
+            color C_MUTED
 
     vbox:
         xalign 0.5
@@ -112,98 +178,98 @@ screen chara_story_list():
 
     vbox:
         xalign 0.5
-        yalign 0.87
+        yalign 0.88
 
         textbutton "返回":
             action Return("back")
 
 
 ################################################################################
-# 模式选择（开始游戏后进入）
+# 通用提示页（占位模式用）
 ################################################################################
 
-screen mode_select_menu():
-    style_prefix "title"
+screen notice_screen(notice_title, notice_body):
+    add "gui_gen/bg_main.png"
 
-    add Solid("#0B0D10")
-
-    vbox:
-        xalign 0.5
-        yalign 0.2
-        spacing 12
-
-        text "选择模式":
-            xalign 0.5
-            size 34
-            color "#E8E8E8"
-
-        text "主线模式 / 角色剧情 / 开发中内容":
-            xalign 0.5
-            size 15
-            color "#6E747C"
-
-    hbox:
+    frame:
         xalign 0.5
         yalign 0.5
-        spacing 120
+        xsize 680
+        background Frame("gui_gen/panel.png", 12, 12)
+        padding (48, 44)
 
         vbox:
-            spacing 16
-
-            textbutton "主线模式":
-                action Return("main")
-            textbutton "角色剧情":
-                action Return("chara")
-            textbutton "干员档案":
-                action Return("archive")
-
-        vbox:
-            spacing 16
-
-            textbutton "故事集":
-                action Return("collection")
-            textbutton "时间线":
-                action Return("timeline")
-            textbutton "正在开发":
-                action Return("dev")
-
-    vbox:
-        xalign 0.5
-        yalign 0.87
-
-        textbutton "返回标题":
-            action Return("back")
-
-
-# 通用提示页（占位模式用）
-screen notice_screen(notice_title, notice_body):
-    style_prefix "title"
-
-    add Solid("#0B0D10")
-
-    vbox:
-        xalign 0.5
-        yalign 0.32
-        spacing 24
-
-        text notice_title:
+            spacing 24
             xalign 0.5
-            size 34
-            color "#E8E8E8"
 
-        text notice_body:
-            xalign 0.5
-            text_align 0.5
-            size 18
-            color "#9AA0A8"
-            line_spacing 10
+            hbox:
+                xalign 0.5
+                spacing 10
+                add Solid(C_ACCENT) xysize (6, 30)
+                text notice_title:
+                    size 34
+                    color C_TEXT
+                    yalign 0.5
+
+            text notice_body:
+                xalign 0.5
+                text_align 0.5
+                size 19
+                color C_MUTED
+                line_spacing 10
+
+            null height 16
+
+            textbutton "返回":
+                xalign 0.5
+                action Return()
+
+
+style notice_button is title_button:
+    xsize 180
+
+style notice_button_text is title_button_text:
+    xalign 0.5
+
+
+################################################################################
+# 章节结束卡
+################################################################################
+
+screen chapter_end_card(chapter_text):
+    add "gui_gen/bg_main.png"
 
     vbox:
         xalign 0.5
-        yalign 0.82
+        yalign 0.4
+        spacing 28
+        xsize 520
 
-        textbutton "返回":
-            action Return()
+        hbox:
+            xalign 0.5
+            spacing 0
+            add Solid(C_ACCENT) xysize (80, 2)
+            null width 16
+            add Solid(C_ACCENT) xysize (80, 2)
+
+        text chapter_text:
+            xalign 0.5
+            size 42
+            kerning 4
+            color C_TEXT
+
+        text "未完待续":
+            xalign 0.5
+            size 22
+            color C_MUTED
+
+    text "点击继续":
+        xalign 0.5
+        yalign 0.9
+        size 15
+        color C_MUTED
+        at ctc_pulse
+
 
 ################################################################################
 # 确认弹窗（退出/返回主菜单时调用）
@@ -219,43 +285,34 @@ screen confirm(message, yes_action, no_action):
     frame:
         xalign 0.5
         yalign 0.5
-        background Solid("#1C1E22")
+        background Frame("gui_gen/panel.png", 12, 12)
         padding (48, 36)
 
         vbox:
             spacing 28
             xalign 0.5
 
-            text message:
+            hbox:
                 xalign 0.5
-                text_align 0.5
-                color "#E8E8E8"
-                size 24
+                spacing 10
+                add Solid(C_ACCENT) xysize (4, 22)
+                text message:
+                    size 24
+                    color C_TEXT
+                    yalign 0.5
 
             hbox:
                 xalign 0.5
-                spacing 48
+                spacing 40
 
-                textbutton _("确定"):
+                textbutton "确定":
                     action yes_action
-                textbutton _("取消"):
+                textbutton "取消":
                     action no_action
 
 
-style confirm_frame is default
+style confirm_button is title_button:
+    xsize 140
 
-style confirm_button is default:
-    xminimum 160
-    background Solid("#2E3138")
-    padding (20, 10)
-
-style confirm_button_text is default:
+style confirm_button_text is title_button_text:
     xalign 0.5
-    color "#E8E8E8"
-    size 22
-
-style confirm_button_hover is confirm_button:
-    background Solid("#3D5A73")
-
-style confirm_button_text_hover is confirm_button_text:
-    color "#FFFFFF"

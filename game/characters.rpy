@@ -3,16 +3,8 @@
 # 新增角色：在下方加 define，并在 script.rpy 或 chara_story.rpy 中使用
 # ============================================================
 
-# ---------- 点击继续指示器（对话框右下角呼吸的 ▼） ----------
-transform ctc_pulse:
-    alpha 0.35
-    linear 0.8 alpha 1.0
-    linear 0.8 alpha 0.35
-    repeat
-
-image ctc_arrow = At(Text("▼", size=16, color="#9AA0A8"), ctc_pulse)
-
 # ---------- 主要角色 ----------
+# ctc 与动效见 ui_extra.rpy
 # who=None 表示旁白；color 为角色名颜色，后续与干员主题色对齐
 define a = Character(_("阿米娅"), color="#64C1E8", who_outlines=[(1, "#00000080")],
                      ctc="ctc_arrow", ctc_position="nestled")

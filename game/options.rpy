@@ -26,6 +26,9 @@ define config.layers = [ 'master', 'transient', 'screens', 'overlay', 'front' ]
 
 # 窗口图标暂缺，接入美术素材后再配置：define config.window_icon = "gui/window_icon.png"
 
+# 按 Esc/右键直接打开保存界面（左侧导航可切换到读档/设置/历史）
+define config.game_menu_action = ShowMenu("save")
+
 # ---------- 默认偏好（新玩家首次进游戏的初值） ----------
 define config.default_text_cps = 45
 define config.default_afm_time = 12

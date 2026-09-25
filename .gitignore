@@ -11,6 +11,9 @@ traceback.txt
 lint.txt
 steam_appid.txt
 
+# Python 工具缓存
+tools/__pycache__/
+
 # 系统文件
 Thumbs.db
 .DS_Store

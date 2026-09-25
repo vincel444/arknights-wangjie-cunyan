@@ -3,6 +3,7 @@
 # 这些界面由 Esc、鼠标右键或快捷工具栏唤起
 # ============================================================
 
+
 ################################################################################
 # 游戏菜单外壳（左导航 + 右内容）
 ################################################################################
@@ -11,20 +12,21 @@ screen game_menu(title, scroll=None):
     tag menu
     style_prefix "gm"
 
-    add Solid("#0B0D10")
+    add "gui_gen/bg_menu.png"
 
     hbox:
         xalign 0.5
         yalign 0.5
-        spacing 48
+        spacing 40
 
         vbox:
-            xsize 240
-            spacing 10
+            xsize 250
+            spacing 8
 
             text title style "gm_title"
+            add Solid("#E3B457") xysize (120, 2)
 
-            null height 14
+            null height 16
 
             textbutton "继续游戏" action Return()
             textbutton "存档" action ShowMenu("save")
@@ -32,7 +34,7 @@ screen game_menu(title, scroll=None):
             textbutton "历史" action ShowMenu("history")
             textbutton "设置" action ShowMenu("preferences")
 
-            null height 14
+            null height 16
 
             textbutton "返回标题" action MainMenu()
             textbutton "退出游戏" action Quit(confirm=True)
@@ -51,19 +53,22 @@ screen game_menu(title, scroll=None):
 
 
 style gm_title:
-    size 30
-    color "#E8E8E8"
+    size 32
+    color "#EAEAEA"
+    kerning 3
 
 style gm_content:
-    background Solid("#12151A")
+    background Frame("gui_gen/panel.png", 12, 12)
     padding (36, 28)
-    xsize 820
+    xsize 840
     ysize 520
 
-style gm_button is confirm_button
-style gm_button_text is confirm_button_text
-style gm_button:
-    xfill True
+style gm_button is title_button:
+    xsize 240
+    xalign 0.0
+
+style gm_button_text is title_button_text
+
 
 ################################################################################
 # 存档 / 读档
@@ -93,7 +98,7 @@ screen file_slots(title, save_mode):
                         has vbox
                         spacing 6
 
-                        add FileScreenshot(i)
+                        add FileScreenshot(i) xsize 214 ysize 120
 
                         text FileTime(i, format="%m-%d %H:%M", empty="— 空档位 —") style "slot_time_text"
 
@@ -107,14 +112,17 @@ screen file_slots(title, save_mode):
 
 
 style slot_button:
-    padding (6, 6)
-    background Solid("#1A1E24")
-    hover_background Solid("#28323E")
+    xsize 244
+    ysize 160
+    background Frame("gui_gen/slot.png", 12, 12)
+    hover_background Frame("gui_gen/slot_hover.png", 12, 12)
+    padding (10, 10)
 
 style slot_time_text:
-    size 16
-    color "#9AA0A8"
+    size 15
+    color "#8A9099"
     xalign 0.5
+
 
 ################################################################################
 # 设置
@@ -124,52 +132,86 @@ screen preferences():
     tag menu
     use game_menu("设置"):
         vbox:
-            spacing 26
+            spacing 24
 
-            vbox:
-                spacing 6
-                text "文字速度" style "pref_label"
-                bar value Preference("text speed") xsize 460
-
-            vbox:
-                spacing 6
-                text "自动前进间隔" style "pref_label"
-                bar value Preference("auto-forward time") xsize 460
-
-            vbox:
+            # ---- 文本 ----
+            hbox:
                 spacing 10
-                text "音量" style "pref_label"
+                add Solid(C_ACCENT) xysize (4, 22)
+                text "文本" style "pref_section_text"
 
-                hbox:
-                    spacing 16
-                    text "音乐" style "pref_label_sub" yalign 0.5
-                    bar value Preference("music volume") xsize 320
-                hbox:
-                    spacing 16
-                    text "音效" style "pref_label_sub" yalign 0.5
-                    bar value Preference("sound volume") xsize 320
-                hbox:
-                    spacing 16
-                    text "语音" style "pref_label_sub" yalign 0.5
-                    bar value Preference("voice volume") xsize 320
+            vbox:
+                spacing 8
+                text "文字速度" style "pref_label"
+                bar value Preference("text speed") xsize 460 style "pref_bar"
+
+            vbox:
+                spacing 8
+                text "自动前进间隔" style "pref_label"
+                bar value Preference("auto-forward time") xsize 460 style "pref_bar"
+
+            # ---- 音量 ----
+            hbox:
+                spacing 10
+                add Solid(C_ACCENT) xysize (4, 22)
+                text "音量" style "pref_section_text"
 
             hbox:
                 spacing 20
-                textbutton "窗口 / 全屏" action Preference("display", "toggle")
-                textbutton "跳过未读文本" action Preference("skip", "toggle")
+                vbox:
+                    spacing 10
+                    hbox:
+                        spacing 16
+                        text "音乐" style "pref_label_sub" yalign 0.5
+                        bar value Preference("music volume") xsize 280 style "pref_bar"
+                    hbox:
+                        spacing 16
+                        text "音效" style "pref_label_sub" yalign 0.5
+                        bar value Preference("sound volume") xsize 280 style "pref_bar"
+                    hbox:
+                        spacing 16
+                        text "语音" style "pref_label_sub" yalign 0.5
+                        bar value Preference("voice volume") xsize 280 style "pref_bar"
 
+            # ---- 显示 ----
+            hbox:
+                spacing 10
+                add Solid(C_ACCENT) xysize (4, 22)
+                text "显示" style "pref_section_text"
+
+            hbox:
+                spacing 20
+                textbutton "窗口 / 全屏" action Preference("display", "toggle") style "pref_tog"
+                textbutton "跳过未读文本" action Preference("skip", "toggle") style "pref_tog"
+
+
+style pref_section_text:
+    size 22
+    color "#EAEAEA"
+    yalign 0.5
 
 style pref_label:
-    size 20
-    color "#C3C9D1"
-
-style pref_label_sub:
     size 18
     color "#8A9099"
-    xsize 60
 
-style pref_button is confirm_button
-style pref_button_text is confirm_button_text
+style pref_label_sub:
+    size 17
+    color "#8A9099"
+    xsize 50
+
+style pref_tog is title_button:
+    xsize 180
+
+style pref_tog_text is title_button_text:
+    xalign 0.5
+
+style pref_bar:
+    xsize 460
+    ysize 18
+    left_bar Solid("#E3B457")
+    right_bar Solid("#2A3138")
+    thumb Solid("#00000000")
+
 
 ################################################################################
 # 历史记录
@@ -179,7 +221,7 @@ screen history():
     tag menu
     use game_menu("历史", scroll="viewport"):
         vbox:
-            spacing 18
+            spacing 20
 
             if not _history_list:
                 text "暂无历史记录。" style "history_empty"
@@ -192,14 +234,15 @@ screen history():
                         text h.who style "history_name_text"
 
                     text h.what style "history_text"
-                    # 去掉文本标签，按纯文本显示
+
+                add Solid("#262D35") xysize (720, 1) alpha 0.5
 
 
 style history_text:
-    size 22
+    size 21
     color "#C3C9D1"
     line_spacing 6
-    xsize 700
+    xsize 720
 
 style history_name_text:
     size 20
@@ -207,4 +250,4 @@ style history_name_text:
 
 style history_empty:
     size 20
-    color "#6E747C"
+    color "#8A9099"

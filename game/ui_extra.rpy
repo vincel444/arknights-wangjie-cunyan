@@ -1,7 +1,19 @@
 # ============================================================
-# 对话演出层：对话框、姓名条、选项按钮、快捷工具栏
-# 视觉基调：深色半透明 + 冷灰文字 + 左侧强调色姓名条
+# 演出层 UI：对话框、姓名条、选项按钮、快捷工具栏
 # ============================================================
+
+################################################################################
+# 点击继续指示器（对话框右下角呼吸的 ▼）
+################################################################################
+
+transform ctc_pulse:
+    alpha 0.35
+    linear 0.8 alpha 1.0
+    linear 0.8 alpha 0.35
+    repeat
+
+image ctc_arrow = At(Text("▼", size=16, color="#E3B457"), ctc_pulse)
+
 
 ################################################################################
 # 对话屏幕
@@ -30,50 +42,53 @@ screen say(who, what):
 style say_window:
     xfill True
     yalign 1.0
-    ysize 250
-    background Solid("#05070AD9")
-    padding (64, 56, 64, 44)
+    ysize 260
+    background Frame("gui_gen/window_bg.png", 8, 8)
+    padding (64, 60, 64, 50)
 
 style namebox:
     xpos 0
-    ypos -34
-    background Solid("#12151AF0")
+    ypos -38
+    background Frame("gui_gen/nameplate.png", 8, 8)
     padding (24, 8)
 
 style say_label:
-    color "#E8E8E8"
+    color "#EAEAEA"
     size 28
     bold False
+    outlines [ (2, "#000000A0", 0, 0) ]
 
 style say_dialogue:
     xpos 4
     size 27
-    color "#E8E8E8"
+    color "#EAEAEA"
     outlines [ (2, "#000000B0", 0, 0) ]
     line_spacing 12
     kerning 0.4
+
 
 ################################################################################
 # 选项按钮（剧中分支）
 ################################################################################
 
 style choice_button:
-    xsize 860
+    xsize 840
     xalign 0.5
-    background Solid("#12151AD8")
-    hover_background Solid("#2C3E52E8")
-    padding (40, 18)
+    background Frame("gui_gen/btn.png", 8, 8)
+    hover_background Frame("gui_gen/btn_hover.png", 8, 8)
+    padding (40, 20)
 
 style choice_button_text:
     size 26
     color "#C3C9D1"
     hover_color "#FFFFFF"
-    xalign 0.5
+    xalign 0.0
 
 style choice_vbox:
     xalign 0.5
     yalign 0.5
-    spacing 14
+    spacing 16
+
 
 ################################################################################
 # 快捷工具栏（游戏中常驻，鼠标移到屏幕底部出现）
@@ -83,25 +98,29 @@ screen quick_menu():
     zorder 100
     style_prefix "quick"
 
-    hbox:
+    frame:
         xalign 0.5
         yalign 1.0
-        yoffset -8
-        spacing 4
+        yoffset -4
+        background Frame("gui_gen/quickbar.png", 8, 8)
+        padding (14, 8)
 
-        textbutton "回退" action Rollback()
-        textbutton "隐藏" action HideInterface()
-        textbutton "自动" action Preference("auto-forward", "toggle")
-        textbutton "快进" action Skip() alternate Skip(fast=True, confirm=True)
-        textbutton "存档" action ShowMenu("save")
-        textbutton "读档" action ShowMenu("load")
-        textbutton "历史" action ShowMenu("history")
-        textbutton "设置" action ShowMenu("preferences")
-        textbutton "标题" action MainMenu()
+        hbox:
+            spacing 2
+
+            textbutton "回退" action Rollback()
+            textbutton "隐藏" action HideInterface()
+            textbutton "自动" action Preference("auto-forward", "toggle")
+            textbutton "快进" action Skip() alternate Skip(fast=True, confirm=True)
+            textbutton "存档" action ShowMenu("save")
+            textbutton "读档" action ShowMenu("load")
+            textbutton "历史" action ShowMenu("history")
+            textbutton "设置" action ShowMenu("preferences")
+            textbutton "标题" action MainMenu()
 
 
 style quick_button:
-    padding (16, 6)
+    padding (14, 6)
     background None
 
 style quick_button_text:
