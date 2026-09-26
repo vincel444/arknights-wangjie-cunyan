@@ -17,7 +17,7 @@ screen game_menu(title, scroll=None):
     hbox:
         xalign 0.5
         yalign 0.5
-        spacing 40
+        spacing 44
 
         vbox:
             xsize 250
@@ -26,7 +26,7 @@ screen game_menu(title, scroll=None):
             text title style "gm_title"
             add Solid("#E3B457") xysize (120, 2)
 
-            null height 16
+            null height 18
 
             textbutton "继续游戏" action Return()
             textbutton "存档" action ShowMenu("save")
@@ -34,7 +34,7 @@ screen game_menu(title, scroll=None):
             textbutton "历史" action ShowMenu("history")
             textbutton "设置" action ShowMenu("preferences")
 
-            null height 16
+            null height 18
 
             textbutton "返回标题" action MainMenu()
             textbutton "退出游戏" action Quit(confirm=True)
@@ -58,7 +58,7 @@ style gm_title:
     kerning 3
 
 style gm_content:
-    background Frame("gui_gen/panel.png", 12, 12)
+    background Frame("gui_gen/panel.png", 16, 16)
     padding (36, 28)
     xsize 840
     ysize 520
@@ -66,8 +66,10 @@ style gm_content:
 style gm_button is title_button:
     xsize 240
     xalign 0.0
+    selected_background Frame("gui_gen/btn_hover.png", 12, 12)
 
-style gm_button_text is title_button_text
+style gm_button_text is title_button_text:
+    selected_color "#E3B457"
 
 
 ################################################################################
@@ -85,7 +87,7 @@ screen load():
 screen file_slots(title, save_mode):
     use game_menu(title):
         vbox:
-            spacing 18
+            spacing 20
 
             grid 3 2:
                 spacing 16
@@ -96,7 +98,7 @@ screen file_slots(title, save_mode):
                         action (FileSave(i) if save_mode else FileLoad(i))
                         style "slot_button"
                         has vbox
-                        spacing 6
+                        spacing 8
 
                         add FileScreenshot(i) xsize 214 ysize 120
 
@@ -106,22 +108,29 @@ screen file_slots(title, save_mode):
                 xalign 0.5
                 spacing 16
 
-                textbutton "上一页" action FilePagePrevious()
-                textbutton "自动存档" action FilePage("auto")
-                textbutton "下一页" action FilePageNext()
+                textbutton "上一页" style "page_button" action FilePagePrevious()
+                textbutton "自动存档" style "page_button" action FilePage("auto")
+                textbutton "下一页" style "page_button" action FilePageNext()
 
 
 style slot_button:
     xsize 244
-    ysize 160
-    background Frame("gui_gen/slot.png", 12, 12)
-    hover_background Frame("gui_gen/slot_hover.png", 12, 12)
-    padding (10, 10)
+    ysize 164
+    background Frame("gui_gen/slot.png", 14, 14)
+    hover_background Frame("gui_gen/slot_hover.png", 14, 14)
+    padding (12, 12)
 
 style slot_time_text:
     size 15
     color "#8A9099"
     xalign 0.5
+
+style page_button is title_button:
+    xsize 150
+    padding (16, 10)
+
+style page_button_text is title_button_text:
+    size 18
 
 
 ################################################################################
@@ -132,12 +141,12 @@ screen preferences():
     tag menu
     use game_menu("设置"):
         vbox:
-            spacing 24
+            spacing 22
 
             # ---- 文本 ----
             hbox:
                 spacing 10
-                add Solid(C_ACCENT) xysize (4, 22)
+                add Solid("#E3B457") xysize (4, 22)
                 text "文本" style "pref_section_text"
 
             vbox:
@@ -153,13 +162,13 @@ screen preferences():
             # ---- 音量 ----
             hbox:
                 spacing 10
-                add Solid(C_ACCENT) xysize (4, 22)
+                add Solid("#E3B457") xysize (4, 22)
                 text "音量" style "pref_section_text"
 
             hbox:
                 spacing 20
                 vbox:
-                    spacing 10
+                    spacing 12
                     hbox:
                         spacing 16
                         text "音乐" style "pref_label_sub" yalign 0.5
@@ -176,7 +185,7 @@ screen preferences():
             # ---- 显示 ----
             hbox:
                 spacing 10
-                add Solid(C_ACCENT) xysize (4, 22)
+                add Solid("#E3B457") xysize (4, 22)
                 text "显示" style "pref_section_text"
 
             hbox:
@@ -200,16 +209,16 @@ style pref_label_sub:
     xsize 50
 
 style pref_tog is title_button:
-    xsize 180
+    xsize 230
 
 style pref_tog_text is title_button_text:
     xalign 0.5
 
 style pref_bar:
     xsize 460
-    ysize 18
-    left_bar Solid("#E3B457")
-    right_bar Solid("#2A3138")
+    ysize 16
+    left_bar Frame("gui_gen/bar_fill.png", 5, 5)
+    right_bar Frame("gui_gen/bar_track.png", 5, 5)
     thumb Solid("#00000000")
 
 
@@ -235,7 +244,7 @@ screen history():
 
                     text h.what style "history_text"
 
-                add Solid("#262D35") xysize (720, 1) alpha 0.5
+                add Solid("#2A3138") xysize (720, 1) alpha 0.6
 
 
 style history_text:

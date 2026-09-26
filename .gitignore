@@ -11,6 +11,13 @@ traceback.txt
 lint.txt
 steam_appid.txt
 
+# 本地调试临时文件
+lint_*.txt
+gen_log.txt
+proc_check.txt
+git_status.txt
+tools/check_report.txt
+
 # Python 工具缓存
 tools/__pycache__/
 

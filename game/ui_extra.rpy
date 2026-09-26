@@ -3,16 +3,16 @@
 # ============================================================
 
 ################################################################################
-# 点击继续指示器（对话框右下角呼吸的 ▼）
+# 点击继续指示器（对话框内呼吸的琥珀三角）
 ################################################################################
 
 transform ctc_pulse:
-    alpha 0.35
-    linear 0.8 alpha 1.0
-    linear 0.8 alpha 0.35
+    alpha 0.45
+    linear 0.7 alpha 1.0
+    linear 0.7 alpha 0.45
     repeat
 
-image ctc_arrow = At(Text("▼", size=16, color="#E3B457"), ctc_pulse)
+image ctc_arrow = At("gui_gen/ctc.png", ctc_pulse)
 
 
 ################################################################################
@@ -43,14 +43,14 @@ style say_window:
     xfill True
     yalign 1.0
     ysize 260
-    background Frame("gui_gen/window_bg.png", 8, 8)
-    padding (64, 60, 64, 50)
+    background Frame("gui_gen/window_bg.png", 16, 16)
+    padding (64, 58, 64, 48)
 
 style namebox:
     xpos 0
-    ypos -38
-    background Frame("gui_gen/nameplate.png", 8, 8)
-    padding (24, 8)
+    ypos -42
+    background Frame("gui_gen/nameplate.png", 12, 12)
+    padding (28, 10)
 
 style say_label:
     color "#EAEAEA"
@@ -63,7 +63,7 @@ style say_dialogue:
     size 27
     color "#EAEAEA"
     outlines [ (2, "#000000B0", 0, 0) ]
-    line_spacing 12
+    line_spacing 14
     kerning 0.4
 
 
@@ -74,15 +74,15 @@ style say_dialogue:
 style choice_button:
     xsize 840
     xalign 0.5
-    background Frame("gui_gen/btn.png", 8, 8)
-    hover_background Frame("gui_gen/btn_hover.png", 8, 8)
+    background Frame("gui_gen/btn.png", 12, 12)
+    hover_background Frame("gui_gen/btn_hover.png", 12, 12)
     padding (40, 20)
 
 style choice_button_text:
     size 26
-    color "#C3C9D1"
+    color "#C9CFD7"
     hover_color "#FFFFFF"
-    xalign 0.0
+    xalign 0.5
 
 style choice_vbox:
     xalign 0.5
@@ -91,22 +91,21 @@ style choice_vbox:
 
 
 ################################################################################
-# 快捷工具栏（游戏中常驻，鼠标移到屏幕底部出现）
+# 快捷工具栏（游戏中常驻，右上角，不遮挡对话框与立绘区文字）
 ################################################################################
 
 screen quick_menu():
     zorder 100
     style_prefix "quick"
 
-    # 置于右上角，避免遮挡对话框与立绘区的文字
     frame:
         xalign 0.99
         yalign 0.02
-        background Frame("gui_gen/quickbar.png", 8, 8)
-        padding (14, 8)
+        background Frame("gui_gen/quickbar.png", 12, 12)
+        padding (18, 9)
 
         hbox:
-            spacing 2
+            spacing 6
 
             textbutton "回退" action Rollback()
             textbutton "隐藏" action HideInterface()
@@ -130,25 +129,25 @@ screen play_state_indicator():
         frame:
             xalign 0.015
             yalign 0.02
-            background Frame("gui_gen/quickbar.png", 8, 8)
-            padding (16, 8)
-            text "快进中 ▶▶" size 18 color "#E3B457"
+            background Frame("gui_gen/quickbar.png", 12, 12)
+            padding (18, 9)
+            text "快进中 ▶▶" size 19 color "#E3B457"
 
     elif preferences.afm_enable:
         frame:
             xalign 0.015
             yalign 0.02
-            background Frame("gui_gen/quickbar.png", 8, 8)
-            padding (16, 8)
-            text "自动播放中" size 18 color "#7FB3D5"
+            background Frame("gui_gen/quickbar.png", 12, 12)
+            padding (18, 9)
+            text "自动播放中" size 19 color "#7FB3D5"
 
 
 style quick_button:
-    padding (14, 6)
+    padding (15, 7)
     background None
 
 style quick_button_text:
-    size 18
-    color "#6E747C"
+    size 19
+    color "#7A828C"
     hover_color "#FFFFFF"
     selected_color "#7FB3D5"

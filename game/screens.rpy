@@ -24,35 +24,33 @@ screen main_menu_title():
 
     vbox:
         xalign 0.5
-        yalign 0.28
-        spacing 12
+        yalign 0.26
+        spacing 14
 
         text "明日方舟：妄界存言":
-            size 64
-            kerning 5
+            size 62
+            kerning 6
             color C_TEXT
-            outlines [ (3, "#00000080", 0, 0) ]
+            outlines [ (2, "#000000A0", 0, 0) ]
 
-        hbox:
-            xalign 0.5
-            add "gui_gen/rule.png"
+        add "gui_gen/deco_line.png" xalign 0.5
 
         text "泰拉纪年 · 剧情向文字冒险":
             size 17
-            kerning 6
-            color C_MUTED
+            kerning 7
+            color C_COOL
 
         text "非官方同人作品 · 仅供学习交流":
-            size 15
+            size 14
             color "#5A6068"
 
     hbox:
         xalign 0.5
-        yalign 0.76
-        spacing 36
+        yalign 0.74
+        spacing 32
 
         vbox:
-            spacing 16
+            spacing 14
 
             textbutton "开始游戏":
                 action Start("mode_select")
@@ -60,7 +58,7 @@ screen main_menu_title():
                 action ShowMenu("load")
 
         vbox:
-            spacing 16
+            spacing 14
 
             textbutton "设置":
                 action ShowMenu("preferences")
@@ -68,18 +66,18 @@ screen main_menu_title():
                 action Quit(confirm=False)
 
     text "v[config.version]":
-        xalign 0.98
-        yalign 0.97
+        xalign 0.985
+        yalign 0.965
         size 14
-        color "#3A4048"
+        color "#565E68"
 
 
 style title_button:
     xsize 300
     xalign 0.5
-    background Frame("gui_gen/btn.png", 8, 8)
-    hover_background Frame("gui_gen/btn_hover.png", 8, 8)
-    padding (32, 16)
+    background Frame("gui_gen/btn.png", 12, 12)
+    hover_background Frame("gui_gen/btn_hover.png", 12, 12)
+    padding (34, 16)
 
 style title_button_text:
     size 24
@@ -89,63 +87,89 @@ style title_button_text:
 
 
 ################################################################################
-# 模式选择
+# 模式选择（3×2 卡片网格）
 ################################################################################
 
-screen mode_select_menu():
-    style_prefix "mode"
+screen mode_card(idx, mtitle, mdesc, act):
+    button:
+        style "mode_card"
+        action act
 
+        vbox:
+            xpos 34
+            yalign 0.5
+            spacing 8
+
+            text mtitle style "mode_card_title"
+            text mdesc style "mode_card_desc"
+
+        text idx style "mode_card_idx" xalign 0.90 yalign 0.06
+
+
+screen mode_select_menu():
     add "gui_gen/bg_main.png"
 
     vbox:
         xalign 0.5
-        yalign 0.16
-        spacing 10
+        yalign 0.13
+        spacing 12
 
         text "选择模式":
-            size 38
-            kerning 4
+            size 36
+            kerning 5
             color C_TEXT
 
-        hbox:
-            xalign 0.5
-            add "gui_gen/rule.png" xysize (240, 2)
+        add "gui_gen/deco_line.png" xalign 0.5
 
-    hbox:
+    grid 3 2:
         xalign 0.5
-        yalign 0.5
-        spacing 100
+        yalign 0.52
+        spacing 24
 
-        vbox:
-            spacing 14
+        use mode_card("01", "主线模式", "罗德岛本舰 · 章节式主线", Return("main"))
+        use mode_card("02", "角色剧情", "干员个人线 · 深入其人", Return("chara"))
+        use mode_card("03", "干员档案", "干员资料库 · 建设中", Return("archive"))
+        use mode_card("04", "故事集", "短篇与外传 · 建设中", Return("collection"))
+        use mode_card("05", "时间线", "泰拉大事记 · 建设中", Return("timeline"))
+        use mode_card("06", "正在开发", "版本路线图 · 敬请期待", Return("dev"))
 
-            textbutton "主线模式":
-                action Return("main")
-            textbutton "角色剧情":
-                action Return("chara")
-            textbutton "干员档案":
-                action Return("archive")
-
-        vbox:
-            spacing 14
-
-            textbutton "故事集":
-                action Return("collection")
-            textbutton "时间线":
-                action Return("timeline")
-            textbutton "正在开发":
-                action Return("dev")
-
-    vbox:
+    textbutton "← 返回标题":
+        style "mode_back"
         xalign 0.5
-        yalign 0.88
-
-        textbutton "返回标题":
-            action Return("back")
+        yalign 0.92
+        action Return("back")
 
 
-style mode_button is title_button
-style mode_button_text is title_button_text
+style mode_card:
+    xsize 300
+    ysize 148
+    padding (0, 0)
+    background Frame("gui_gen/card.png", 16, 16)
+    hover_background Frame("gui_gen/card_hover.png", 16, 16)
+
+style mode_card_title:
+    size 25
+    color "#EAEAEA"
+    kerning 2
+
+style mode_card_desc:
+    size 15
+    color "#8A9099"
+    line_spacing 4
+
+style mode_card_idx:
+    size 15
+    color "#454E58"
+
+style mode_back:
+    background None
+    hover_background None
+    padding (24, 10)
+
+style mode_back_text:
+    size 17
+    color "#8A9099"
+    hover_color "#EAEAEA"
 
 
 ################################################################################
@@ -153,42 +177,36 @@ style mode_button_text is title_button_text
 ################################################################################
 
 screen chara_story_list():
-    style_prefix "mode"
-
     add "gui_gen/bg_main.png"
 
     vbox:
         xalign 0.5
-        yalign 0.16
-        spacing 10
+        yalign 0.15
+        spacing 12
 
         text "角色剧情":
-            size 38
-            kerning 4
+            size 36
+            kerning 5
             color C_TEXT
 
-        hbox:
-            xalign 0.5
-            add "gui_gen/rule.png" xysize (240, 2)
+        add "gui_gen/deco_line.png" xalign 0.5
 
         text "选择干员，阅读其个人剧情":
             size 15
             color C_MUTED
 
-    vbox:
+    hbox:
         xalign 0.5
-        yalign 0.48
-        spacing 16
+        yalign 0.5
+        spacing 24
 
-        textbutton "仕衣":
-            action Return("shiyi")
+        use mode_card("01", "仕衣", "第一章 · 等待剧本接入", Return("shiyi"))
 
-    vbox:
+    textbutton "← 返回":
+        style "mode_back"
         xalign 0.5
-        yalign 0.88
-
-        textbutton "返回":
-            action Return("back")
+        yalign 0.9
+        action Return("back")
 
 
 ################################################################################
@@ -202,32 +220,36 @@ screen notice_screen(notice_title, notice_body):
         xalign 0.5
         yalign 0.5
         xsize 680
-        background Frame("gui_gen/panel.png", 12, 12)
-        padding (48, 44)
+        background Frame("gui_gen/panel.png", 16, 16)
+        padding (52, 48)
 
         vbox:
-            spacing 24
+            spacing 26
             xalign 0.5
 
-            hbox:
+            vbox:
                 xalign 0.5
-                spacing 10
-                add Solid(C_ACCENT) xysize (6, 30)
+                spacing 12
+
                 text notice_title:
                     size 34
                     color C_TEXT
-                    yalign 0.5
+                    kerning 3
+                    xalign 0.5
+
+                add "gui_gen/deco_line.png" xalign 0.5 xysize (460, 12)
 
             text notice_body:
                 xalign 0.5
                 text_align 0.5
                 size 19
                 color C_MUTED
-                line_spacing 10
+                line_spacing 12
 
-            null height 16
+            null height 12
 
             textbutton "返回":
+                style "notice_button"
                 xalign 0.5
                 action Return()
 
@@ -249,25 +271,21 @@ screen chapter_end_card(chapter_text):
     vbox:
         xalign 0.5
         yalign 0.4
-        spacing 28
-        xsize 520
+        spacing 30
+        xsize 640
 
-        hbox:
-            xalign 0.5
-            spacing 0
-            add Solid(C_ACCENT) xysize (80, 2)
-            null width 16
-            add Solid(C_ACCENT) xysize (80, 2)
+        add "gui_gen/deco_line.png" xalign 0.5
 
         text chapter_text:
             xalign 0.5
             size 42
-            kerning 4
+            kerning 5
             color C_TEXT
 
         text "未完待续":
             xalign 0.5
-            size 22
+            size 20
+            kerning 6
             color C_MUTED
 
     text "点击继续":
@@ -292,8 +310,8 @@ screen confirm(message, yes_action, no_action):
     frame:
         xalign 0.5
         yalign 0.5
-        background Frame("gui_gen/panel.png", 12, 12)
-        padding (48, 36)
+        background Frame("gui_gen/panel.png", 16, 16)
+        padding (52, 40)
 
         vbox:
             spacing 28
@@ -301,8 +319,8 @@ screen confirm(message, yes_action, no_action):
 
             hbox:
                 xalign 0.5
-                spacing 10
-                add Solid(C_ACCENT) xysize (4, 22)
+                spacing 12
+                add Solid(C_ACCENT) xysize (4, 24)
                 text message:
                     size 24
                     color C_TEXT
