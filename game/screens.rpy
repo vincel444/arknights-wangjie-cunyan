@@ -52,8 +52,7 @@ screen main_menu_title():
         vbox:
             spacing 14
 
-            textbutton "▶ 开始游戏":
-                style "title_start"
+            textbutton "开始游戏":
                 action Start("mode_select")
             textbutton "读取存档":
                 action ShowMenu("load")
@@ -65,10 +64,6 @@ screen main_menu_title():
                 action ShowMenu("preferences")
             textbutton "退出游戏":
                 action Quit(confirm=False)
-
-    # 回车直接开始
-    key "K_RETURN" action Start("mode_select")
-    key "K_KP_ENTER" action Start("mode_select")
 
     text "v[config.version]":
         xalign 0.985
@@ -89,21 +84,6 @@ style title_button_text:
     color "#EAEAEA"
     hover_color "#FFFFFF"
     xalign 0.5
-
-
-style title_start:
-    xsize 380
-    xalign 0.5
-    background Frame("gui_gen/btn_start.png", 16, 16)
-    hover_background Frame("gui_gen/btn_start_hover.png", 16, 16)
-    padding (36, 20)
-
-style title_start_text:
-    size 28
-    color "#14181D"
-    hover_color "#000000"
-    xalign 0.5
-    kerning 2
 
 
 ################################################################################

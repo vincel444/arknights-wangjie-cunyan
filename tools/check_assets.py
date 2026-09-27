@@ -9,7 +9,6 @@ expected = {
     "panel.png": (128, 128), "panel_hover.png": (128, 128),
     "card.png": (128, 128), "card_hover.png": (128, 128),
     "btn.png": (96, 96), "btn_hover.png": (96, 96),
-    "btn_start.png": (128, 128), "btn_start_hover.png": (128, 128),
     "nameplate.png": (96, 96), "window_bg.png": (128, 128),
     "slot.png": (96, 96), "slot_hover.png": (96, 96),
     "quickbar.png": (96, 96), "rule.png": (420, 2),
