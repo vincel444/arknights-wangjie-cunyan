@@ -179,6 +179,29 @@ def make_frames():
     rounded_panel(96, 96, BTN_HOVER_FILL, PANEL_HOVER_BORDER, radius=5,
                   accent_bar=(ACCENT + (255,), 4), glow=True).save(os.path.join(OUT, "btn_hover.png"))
 
+
+def make_start_button():
+    """标题主 CTA：琥珀实底大按钮（开始游戏）"""
+    # 常态：琥珀底 + 浅琥珀描边 + 顶部内高光
+    img = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle([0, 0, 127, 127], radius=6, fill=ACCENT + (255,),
+                        outline=(250, 220, 160, 255), width=1)
+    d.line([(6, 1), (121, 1)], fill=(255, 240, 200, 90), width=1)
+    img.save(os.path.join(OUT, "btn_start.png"))
+
+    # hover：更亮琥珀 + 外圈辉光
+    base = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    d2 = ImageDraw.Draw(base)
+    d2.rounded_rectangle([0, 0, 127, 127], radius=6, fill=(240, 198, 107, 255),
+                         outline=(255, 232, 180, 255), width=1)
+    d2.line([(6, 1), (121, 1)], fill=(255, 250, 230, 140), width=1)
+    glow = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    dg = ImageDraw.Draw(glow)
+    dg.rounded_rectangle([2, 2, 125, 125], radius=6, fill=ACCENT + (140,))
+    glow = glow.filter(ImageFilter.GaussianBlur(4))
+    Image.alpha_composite(glow, base).save(os.path.join(OUT, "btn_start_hover.png"))
+
     # 姓名条（border 12，左侧琥珀条更粗）
     rounded_panel(96, 96, (18, 22, 27, 240), PANEL_BORDER, radius=5,
                   accent_bar=(ACCENT + (255,), 5)).save(os.path.join(OUT, "nameplate.png"))
@@ -261,6 +284,7 @@ def main():
     make_bg("bg_main.png")
     make_bg("bg_menu.png", left_band=True)
     make_frames()
+    make_start_button()
     make_title_rule()
     make_deco_line()
     make_ctc_arrow()
