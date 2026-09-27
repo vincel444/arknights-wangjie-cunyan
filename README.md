@@ -46,6 +46,8 @@
 
 **脚本校验**：双击 `lint.bat`，或命令行 `renpy.exe <本项目路径> lint`
 
+**桌面快捷方式**：`python tools/create_shortcut.py`（依赖 `pip install pywin32`）在桌面生成带自绘图标的「明日方舟：妄界存言」快捷方式；SDK/项目移动后重跑即可。图标由 `tools/gen_icon.py` 生成（`game_icon.ico`）。
+
 ## 项目结构
 
 ```
