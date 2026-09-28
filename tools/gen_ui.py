@@ -282,6 +282,27 @@ def make_checker():
     img.save(os.path.join(OUT, "placeholder.png"))
 
 
+def make_cta_button():
+    """主行动按钮（开始阅读等）：琥珀实底 + hover 辉光"""
+    base = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    d = ImageDraw.Draw(base)
+    d.rounded_rectangle([0, 0, 127, 127], radius=6, fill=ACCENT + (255,),
+                        outline=(250, 220, 160, 255), width=1)
+    d.line([(6, 1), (121, 1)], fill=(255, 240, 200, 90), width=1)
+    base.save(os.path.join(OUT, "btn_cta.png"))
+
+    base = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    d2 = ImageDraw.Draw(base)
+    d2.rounded_rectangle([0, 0, 127, 127], radius=6, fill=(240, 198, 107, 255),
+                         outline=(255, 232, 180, 255), width=1)
+    d2.line([(6, 1), (121, 1)], fill=(255, 250, 230, 140), width=1)
+    glow = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    dg = ImageDraw.Draw(glow)
+    dg.rounded_rectangle([2, 2, 125, 125], radius=6, fill=ACCENT + (140,))
+    glow = glow.filter(ImageFilter.GaussianBlur(4))
+    Image.alpha_composite(glow, base).save(os.path.join(OUT, "btn_cta_hover.png"))
+
+
 def make_extra_frames():
     """章节选择 / 历史 / 存档缩略图 等补充素材"""
 
@@ -339,6 +360,7 @@ def main():
     make_bg("bg_menu.png", left_band=True)
     make_frames()
     make_extra_frames()
+    make_cta_button()
     make_title_rule()
     make_deco_line()
     make_ctc_arrow()

@@ -17,6 +17,7 @@ expected = {
     "chapter_card.png": (128, 128), "chapter_card_hover.png": (128, 128),
     "chapter_card_locked.png": (128, 128), "hist_item.png": (96, 96),
     "thumb_frame.png": (64, 64), "page_dot_on.png": (12, 12), "page_dot_off.png": (12, 12),
+    "btn_cta.png": (128, 128), "btn_cta_hover.png": (128, 128),
 }
 
 lines = []

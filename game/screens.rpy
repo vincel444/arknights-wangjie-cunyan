@@ -187,6 +187,23 @@ style mode_back_text:
     color "#8A9099"
     hover_color "#EAEAEA"
 
+# 主行动按钮（开始阅读）：琥珀实底 + 深色字，页面上唯一的高亮元素
+style story_cta:
+    padding (40, 12)
+    background Frame("gui_gen/btn_cta.png", 12, 12)
+    hover_background Frame("gui_gen/btn_cta_hover.png", 12, 12)
+
+style story_cta_text:
+    size 21
+    kerning 6
+    color "#0C1015"
+    hover_color "#0C1015"
+
+# 逐句阅读页的透明全屏点击层（点击推进，不产生任何视觉）
+style story_click:
+    background None
+    hover_background None
+
 
 ################################################################################
 # 章节选择（主线模式入口，替代引擎默认 menu）
