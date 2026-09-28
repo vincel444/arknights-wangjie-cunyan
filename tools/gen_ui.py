@@ -127,11 +127,37 @@ def add_vignette(img, strength=90):
     return img
 
 
+def add_scanlines(img, step=4, alpha=10):
+    """极细扫描线，增强方舟科技质感"""
+    overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(overlay)
+    w, h = img.size
+    for y in range(0, h, step):
+        d.line([(0, y), (w, y)], fill=(0, 0, 0, alpha), width=1)
+    return Image.alpha_composite(img, overlay)
+
+
+def add_glow_spots(img, spots, blur=120, alpha=42):
+    """低透明度发光斑，给深色底加入纵深与品牌色氛围"""
+    overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(overlay)
+    for (cx, cy, r, color) in spots:
+        d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=color + (alpha,))
+    overlay = overlay.filter(ImageFilter.GaussianBlur(blur))
+    return Image.alpha_composite(img, overlay)
+
+
 def make_bg(name, left_band=False):
     img = vgradient(W, H, BG_TOP, BG_BOTTOM)
     img = add_diag_grid(img)
     img = add_hairlines(img)
     img = add_noise(img)
+    # 品牌色氛围光斑（琥珀左上 + 冷蓝右下），先于扫描线以便被压暗
+    img = add_glow_spots(img, [
+        (240, 130, 210, ACCENT),
+        (W - 220, H - 140, 250, COOL),
+    ])
+    img = add_scanlines(img)
     add_corner_brackets(img)
     add_accent_block(img, (44, 44), (3, 96), 90)
     add_accent_block(img, (44, 44), (96, 3), 90)
@@ -256,11 +282,63 @@ def make_checker():
     img.save(os.path.join(OUT, "placeholder.png"))
 
 
+def make_extra_frames():
+    """章节选择 / 历史 / 存档缩略图 等补充素材"""
+
+    # 章节卡（border 16）：整块横向，左侧竖琥珀条更粗，右端带楔形标记
+    img = rounded_panel(128, 128, (17, 22, 28, 246), PANEL_BORDER, radius=6,
+                        accent_bar=(ACCENT + (215,), 6))
+    d = ImageDraw.Draw(img, "RGBA")
+    # 右端楔形（向内收的装饰缺口）
+    d.polygon([(127, 32), (112, 64), (127, 96)], fill=(0, 0, 0, 0))
+    d.polygon([(127, 40), (118, 64), (127, 88)], fill=ACCENT + (200,))
+    img.save(os.path.join(OUT, "chapter_card.png"))
+
+    img = rounded_panel(128, 128, (30, 38, 47, 250), ACCENT + (200,), radius=6,
+                        accent_bar=(ACCENT + (255,), 6), glow=True)
+    d = ImageDraw.Draw(img, "RGBA")
+    d.polygon([(127, 32), (112, 64), (127, 96)], fill=(0, 0, 0, 0))
+    d.polygon([(127, 40), (118, 64), (127, 88)], fill=ACCENT + (255,))
+    img.save(os.path.join(OUT, "chapter_card_hover.png"))
+
+    # 历史条目底（border 12）：极淡底 + 左侧冷蓝细条
+    img = rounded_panel(96, 96, (255, 255, 255, 8), (255, 255, 255, 0), radius=4)
+    d = ImageDraw.Draw(img, "RGBA")
+    d.rectangle([0, 0, 2, 95], fill=COOL + (110,))
+    img.save(os.path.join(OUT, "hist_item.png"))
+
+    # 缩略图框（border 8）：深底 + 细描边，给 FileScreenshot 做包边
+    img = rounded_panel(64, 64, (7, 9, 12, 255), (46, 55, 66, 255), radius=4)
+    d = ImageDraw.Draw(img, "RGBA")
+    # 四角小切角，呼应科技风
+    for (x, y, dx, dy) in [(0, 0, 1, 1), (63, 0, -1, 1), (0, 63, 1, -1), (63, 63, -1, -1)]:
+        d.line([(x, y), (x + dx * 9, y)], fill=ACCENT + (150,), width=2)
+        d.line([(x, y), (x, y + dy * 9)], fill=ACCENT + (150,), width=2)
+    img.save(os.path.join(OUT, "thumb_frame.png"))
+
+    # 页码指示：当前页琥珀实心 / 其他冷灰空心
+    img = Image.new("RGBA", (12, 12), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.ellipse([2, 2, 9, 9], fill=ACCENT + (255,))
+    img.save(os.path.join(OUT, "page_dot_on.png"))
+
+    img = Image.new("RGBA", (12, 12), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.ellipse([3, 3, 8, 8], outline=(120, 130, 142, 220), width=1)
+    img.save(os.path.join(OUT, "page_dot_off.png"))
+
+    # 章节卡禁用态（未解锁）
+    rounded_panel(128, 128, (13, 16, 20, 235), (34, 40, 48, 255), radius=6,
+                  accent_bar=((90, 96, 105, 150), 6)).save(
+        os.path.join(OUT, "chapter_card_locked.png"))
+
+
 def main():
     ensure_dir()
     make_bg("bg_main.png")
     make_bg("bg_menu.png", left_band=True)
     make_frames()
+    make_extra_frames()
     make_title_rule()
     make_deco_line()
     make_ctc_arrow()

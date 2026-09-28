@@ -100,9 +100,23 @@ screen file_slots(title, save_mode):
                         has vbox
                         spacing 8
 
-                        add FileScreenshot(i) xsize 214 ysize 120
+                        # 缩略图：外包一层科技细框
+                        frame:
+                            style "thumb_box"
+                            xalign 0.5
+                            add FileScreenshot(i) xsize 210 ysize 116
 
                         text FileTime(i, format="%m-%d %H:%M", empty="— 空档位 —") style "slot_time_text"
+
+            # 页码指示：当前页实心琥珀，共 5 页
+            hbox:
+                xalign 0.5
+                spacing 8
+                for p in range(1, 6):
+                    if FileCurrentPage() == str(p):
+                        add "gui_gen/page_dot_on.png" yalign 0.5
+                    else:
+                        add "gui_gen/page_dot_off.png" yalign 0.5
 
             hbox:
                 xalign 0.5
@@ -115,10 +129,14 @@ screen file_slots(title, save_mode):
 
 style slot_button:
     xsize 244
-    ysize 164
+    ysize 176
     background Frame("gui_gen/slot.png", 14, 14)
     hover_background Frame("gui_gen/slot_hover.png", 14, 14)
     padding (12, 12)
+
+style thumb_box:
+    background Frame("gui_gen/thumb_frame.png", 8, 8)
+    padding (3, 3)
 
 style slot_time_text:
     size 15
@@ -230,28 +248,42 @@ screen history():
     tag menu
     use game_menu("历史", scroll="viewport"):
         vbox:
-            spacing 20
+            spacing 14
 
             if not _history_list:
-                text "暂无历史记录。" style "history_empty"
+                vbox:
+                    xalign 0.5
+                    spacing 12
+                    text "暂无历史记录。" style "history_empty" xalign 0.5
+                    text "开始阅读后，对话将在此按序留档。" xalign 0.5 size 15 color "#4E555E"
 
             for h in _history_list:
-                vbox:
-                    spacing 4
+                frame:
+                    style "history_item"
+                    xfill True
 
-                    if h.who:
-                        text h.who style "history_name_text"
+                    vbox:
+                        spacing 6
 
-                    text h.what style "history_text"
+                        if h.who:
+                            hbox:
+                                spacing 10
+                                add Solid("#7FB3D5") xysize (3, 16) yalign 0.5
+                                text h.who style "history_name_text" yalign 0.5
 
-                add Solid("#2A3138") xysize (720, 1) alpha 0.6
+                        text h.what style "history_text"
 
+
+style history_item:
+    background Frame("gui_gen/hist_item.png", 12, 12)
+    padding (20, 14)
+    xsize 760
 
 style history_text:
     size 21
     color "#C3C9D1"
     line_spacing 6
-    xsize 720
+    xsize 712
 
 style history_name_text:
     size 20

@@ -24,7 +24,7 @@ screen main_menu_title():
 
     vbox:
         xalign 0.5
-        yalign 0.26
+        yalign 0.25
         spacing 14
 
         text "明日方舟：妄界存言":
@@ -40,13 +40,16 @@ screen main_menu_title():
             kerning 7
             color C_COOL
 
-        text "非官方同人作品 · 仅供学习交流":
-            size 14
-            color "#5A6068"
+        hbox:
+            xalign 0.5
+            spacing 10
+            add Solid("#3E464F") xysize (24, 1) yalign 0.5
+            text "非官方同人作品" size 13 color "#5A6068" yalign 0.5
+            add Solid("#3E464F") xysize (24, 1) yalign 0.5
 
     hbox:
         xalign 0.5
-        yalign 0.74
+        yalign 0.73
         spacing 32
 
         vbox:
@@ -65,11 +68,13 @@ screen main_menu_title():
             textbutton "退出游戏":
                 action Quit(confirm=False)
 
-    text "v[config.version]":
-        xalign 0.985
+    # 左下角制作信息
+    vbox:
+        xalign 0.015
         yalign 0.965
-        size 14
-        color "#565E68"
+        spacing 2
+        text "WANGJIE CUNYAN" size 11 kerning 4 color "#3A424B"
+        text "v[config.version]" size 11 color "#3A424B"
 
 
 style title_button:
@@ -111,19 +116,30 @@ screen mode_select_menu():
 
     vbox:
         xalign 0.5
-        yalign 0.13
+        yalign 0.11
         spacing 12
 
-        text "选择模式":
-            size 36
-            kerning 5
-            color C_TEXT
+        hbox:
+            xalign 0.5
+            spacing 12
+            add Solid(C_ACCENT) xysize (4, 30) yalign 0.5
+            text "选择模式":
+                size 36
+                kerning 5
+                color C_TEXT
+                yalign 0.5
 
         add "gui_gen/deco_line.png" xalign 0.5
 
+        text "MAIN MODE SELECT" :
+            xalign 0.5
+            size 12
+            kerning 8
+            color "#3E464F"
+
     grid 3 2:
         xalign 0.5
-        yalign 0.52
+        yalign 0.53
         spacing 24
 
         use mode_card("01", "主线模式", "罗德岛本舰 · 章节式主线", Return("main"))
@@ -136,7 +152,7 @@ screen mode_select_menu():
     textbutton "← 返回标题":
         style "mode_back"
         xalign 0.5
-        yalign 0.92
+        yalign 0.94
         action Return("back")
 
 
@@ -170,6 +186,110 @@ style mode_back_text:
     size 17
     color "#8A9099"
     hover_color "#EAEAEA"
+
+
+################################################################################
+# 章节选择（主线模式入口，替代引擎默认 menu）
+################################################################################
+
+screen chapter_row(num, ctitle, csub, act, locked=False):
+    button:
+        style ("chapter_locked" if locked else "chapter_row")
+        action (None if locked else act)
+
+        hbox:
+            yalign 0.5
+            spacing 0
+
+            # 左侧大号章节数字
+            text num:
+                style "chapter_num"
+                yalign 0.5
+
+            vbox:
+                xpos 0
+                yalign 0.5
+                spacing 6
+
+                text ctitle style "chapter_title"
+                text csub style ("chapter_sub_locked" if locked else "chapter_sub")
+
+        # 右侧状态标记
+        text ("未解锁" if locked else "▶") style "chapter_flag" xalign 0.95 yalign 0.5
+
+
+screen chapter_select_menu():
+    add "gui_gen/bg_main.png"
+
+    vbox:
+        xalign 0.5
+        yalign 0.11
+        spacing 12
+
+        hbox:
+            xalign 0.5
+            spacing 12
+            add Solid(C_ACCENT) xysize (4, 30) yalign 0.5
+            text "主线模式":
+                size 36
+                kerning 5
+                color C_TEXT
+                yalign 0.5
+
+        add "gui_gen/deco_line.png" xalign 0.5
+
+        text "MAIN STORY" xalign 0.5 size 12 kerning 8 color "#3E464F"
+
+    vbox:
+        xalign 0.5
+        yalign 0.53
+        spacing 16
+
+        use chapter_row("01", "第一章", "罗德岛本舰 · 深夜的走廊", Return(1))
+        use chapter_row("02", "第二章", "待续 · 敬请期待", Return(2), locked=True)
+        use chapter_row("03", "第三章", "待续 · 敬请期待", Return(3), locked=True)
+
+    textbutton "← 返回模式选择":
+        style "mode_back"
+        xalign 0.5
+        yalign 0.94
+        action Return("back")
+
+
+style chapter_row:
+    xsize 720
+    ysize 96
+    padding (0, 0)
+    background Frame("gui_gen/chapter_card.png", 16, 16)
+    hover_background Frame("gui_gen/chapter_card_hover.png", 16, 16)
+
+style chapter_locked is chapter_row:
+    background Frame("gui_gen/chapter_card_locked.png", 16, 16)
+    hover_background Frame("gui_gen/chapter_card_locked.png", 16, 16)
+
+style chapter_num:
+    size 40
+    color "#3E464F"
+    xsize 92
+    xalign 0.5
+    kerning 2
+
+style chapter_title:
+    size 24
+    color "#EAEAEA"
+    kerning 2
+
+style chapter_sub:
+    size 15
+    color "#8A9099"
+
+style chapter_sub_locked:
+    size 15
+    color "#4E555E"
+
+style chapter_flag:
+    size 20
+    color "#E3B457"
 
 
 ################################################################################
@@ -213,40 +333,71 @@ screen chara_story_list():
 # 通用提示页（占位模式用）
 ################################################################################
 
-screen notice_screen(notice_title, notice_body):
+screen notice_screen(notice_title, notice_body, notice_tag="", notice_items=None):
     add "gui_gen/bg_main.png"
 
     frame:
         xalign 0.5
         yalign 0.5
-        xsize 680
+        xsize 720
         background Frame("gui_gen/panel.png", 16, 16)
-        padding (52, 48)
+        padding (52, 46)
 
         vbox:
-            spacing 26
+            spacing 24
             xalign 0.5
 
+            # 标题区：琥珀竖条 + 标题 + 英文角标
             vbox:
                 xalign 0.5
-                spacing 12
+                spacing 10
 
-                text notice_title:
-                    size 34
-                    color C_TEXT
-                    kerning 3
+                hbox:
                     xalign 0.5
+                    spacing 12
+                    add Solid(C_ACCENT) xysize (4, 30) yalign 0.5
+                    text notice_title:
+                        size 34
+                        color C_TEXT
+                        kerning 3
+                        yalign 0.5
 
-                add "gui_gen/deco_line.png" xalign 0.5 xysize (460, 12)
+                add "gui_gen/deco_line.png" xalign 0.5 xysize (480, 12)
 
-            text notice_body:
+                if notice_tag:
+                    text notice_tag:
+                        xalign 0.5
+                        size 12
+                        kerning 8
+                        color "#3E464F"
+
+            # 状态胶囊
+            frame:
                 xalign 0.5
-                text_align 0.5
-                size 19
-                color C_MUTED
-                line_spacing 12
+                background Frame("gui_gen/hist_item.png", 12, 12)
+                padding (20, 8)
+                text "◈ 建设中" size 15 color C_COOL
 
-            null height 12
+            # 规划条目（若提供则渲染为列表）
+            if notice_items:
+                vbox:
+                    xalign 0.5
+                    spacing 10
+                    for it in notice_items:
+                        hbox:
+                            xalign 0.5
+                            spacing 10
+                            add Solid(C_ACCENT) xysize (3, 16) yalign 0.5
+                            text it size 18 color "#A8AFB8" yalign 0.5
+            else:
+                text notice_body:
+                    xalign 0.5
+                    text_align 0.5
+                    size 19
+                    color C_MUTED
+                    line_spacing 12
+
+            null height 6
 
             textbutton "返回":
                 style "notice_button"

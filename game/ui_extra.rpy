@@ -48,9 +48,9 @@ style say_window:
 
 style namebox:
     xpos 0
-    ypos -42
+    ypos -46
     background Frame("gui_gen/nameplate.png", 12, 12)
-    padding (28, 10)
+    padding (30, 12)
 
 style say_label:
     color "#EAEAEA"
@@ -150,4 +150,8 @@ style quick_button_text:
     size 19
     color "#7A828C"
     hover_color "#FFFFFF"
-    selected_color "#7FB3D5"
+    selected_color "#E3B457"
+
+# 激活态（自动播放 / 快进中）按钮整体提亮
+style quick_button_text_selected is quick_button_text:
+    color "#E3B457"

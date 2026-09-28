@@ -14,6 +14,9 @@ expected = {
     "quickbar.png": (96, 96), "rule.png": (420, 2),
     "ctc.png": (20, 12), "placeholder.png": (32, 32),
     "deco_line.png": (640, 16), "bar_fill.png": (16, 16), "bar_track.png": (16, 16),
+    "chapter_card.png": (128, 128), "chapter_card_hover.png": (128, 128),
+    "chapter_card_locked.png": (128, 128), "hist_item.png": (96, 96),
+    "thumb_frame.png": (64, 64), "page_dot_on.png": (12, 12), "page_dot_off.png": (12, 12),
 }
 
 lines = []

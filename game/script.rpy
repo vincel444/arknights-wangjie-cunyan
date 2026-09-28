@@ -41,17 +41,20 @@ label mode_select:
 
 # ---------- 干员档案（开发中占位） ----------
 label operator_archive:
-    call screen notice_screen("干员档案", "该模块正在开发中\n\n规划内容：\n干员立绘一览 · 档案文本 · 语音试听")
+    call screen notice_screen("干员档案", "", notice_tag="OPERATOR ARCHIVE",
+                              notice_items=["干员立绘一览", "档案文本查阅", "语音试听"])
     jump mode_select
 
 # ---------- 故事集（开发中占位） ----------
 label story_collection:
-    call screen notice_screen("故事集", "该模块正在开发中\n\n规划内容：\n活动故事 · 短篇集 · 世界观补充阅读")
+    call screen notice_screen("故事集", "", notice_tag="STORY COLLECTION",
+                              notice_items=["活动故事", "短篇集", "世界观补充阅读"])
     jump mode_select
 
 # ---------- 时间线（开发中占位） ----------
 label world_timeline:
-    call screen notice_screen("时间线", "该模块正在开发中\n\n规划内容：\n泰拉纪年 · 大事件年表 · 剧情节点回溯")
+    call screen notice_screen("时间线", "", notice_tag="WORLD TIMELINE",
+                              notice_items=["泰拉纪年", "大事件年表", "剧情节点回溯"])
     jump mode_select
 
 # ---------- 角色剧情（列表在 chara_story.rpy） ----------
@@ -60,16 +63,19 @@ label chara_story:
 
 # ---------- 开发中内容一览（占位） ----------
 label dev_roadmap:
-    call screen notice_screen("正在开发", "即将上线：\n\n· 角色剧情模式\n· 档案 / 干员资料库\n· 多结局分支系统\n· 语音与动态立绘")
+    call screen notice_screen("正在开发", "", notice_tag="ROADMAP",
+                              notice_items=["角色剧情模式", "档案 / 干员资料库",
+                                            "多结局分支系统", "语音与动态立绘"])
     jump mode_select
 
-# ---------- 章节调度 ----------
+# ---------- 章节调度（专用界面，替代引擎默认 menu） ----------
 label chapter_select:
-    menu:
-        "第一章":
-            jump ch1_opening
-        "返回模式选择":
-            jump mode_select
+    call screen chapter_select_menu
+
+    if _return == 1:
+        jump ch1_opening
+    else:
+        jump mode_select
 
 # ============================================================
 # 第一章 · 垂直切片（占位剧本，等待正式剧本替换）
