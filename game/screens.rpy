@@ -330,6 +330,85 @@ screen chara_story_list():
 
 
 ################################################################################
+# 故事集 · 故事列表
+################################################################################
+
+screen story_card(idx, stitle, sdesc, act):
+    button:
+        style "story_card"
+        action act
+
+        vbox:
+            xpos 34
+            yalign 0.5
+            spacing 9
+
+            text stitle style "story_card_title"
+            text sdesc style "story_card_desc"
+
+        text idx style "mode_card_idx" xalign 0.92 yalign 0.08
+
+
+screen story_collection_list():
+    add "gui_gen/bg_main.png"
+
+    vbox:
+        xalign 0.5
+        yalign 0.11
+        spacing 12
+
+        hbox:
+            xalign 0.5
+            spacing 12
+            add Solid(C_ACCENT) xysize (4, 30) yalign 0.5
+            text "故事集":
+                size 36
+                kerning 5
+                color C_TEXT
+                yalign 0.5
+
+        add "gui_gen/deco_line.png" xalign 0.5
+
+        text "STORY COLLECTION" xalign 0.5 size 12 kerning 8 color "#3E464F"
+
+    # 故事卡片（每行 2 张以内；超过 3 篇时改为 grid 2 N）
+    vbox:
+        xalign 0.5
+        yalign 0.48
+        spacing 24
+
+        hbox:
+            xalign 0.5
+            spacing 24
+
+            use story_card("01", "如您亲启", "一场从未谋划的骗局，一次再向未来的道别", Return("rnqq"))
+
+    textbutton "← 返回模式选择":
+        style "mode_back"
+        xalign 0.5
+        yalign 0.94
+        action Return("back")
+
+
+style story_card:
+    xsize 460
+    ysize 152
+    padding (0, 0)
+    background Frame("gui_gen/card.png", 16, 16)
+    hover_background Frame("gui_gen/card_hover.png", 16, 16)
+
+style story_card_title:
+    size 26
+    color "#EAEAEA"
+    kerning 2
+
+style story_card_desc:
+    size 15
+    color "#8A9099"
+    line_spacing 4
+
+
+################################################################################
 # 通用提示页（占位模式用）
 ################################################################################
 

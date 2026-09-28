@@ -45,11 +45,9 @@ label operator_archive:
                               notice_items=["干员立绘一览", "档案文本查阅", "语音试听"])
     jump mode_select
 
-# ---------- 故事集（开发中占位） ----------
+# ---------- 故事集（列表与正文在 story_collection.rpy） ----------
 label story_collection:
-    call screen notice_screen("故事集", "", notice_tag="STORY COLLECTION",
-                              notice_items=["活动故事", "短篇集", "世界观补充阅读"])
-    jump mode_select
+    jump story_collection_menu
 
 # ---------- 时间线（开发中占位） ----------
 label world_timeline:
