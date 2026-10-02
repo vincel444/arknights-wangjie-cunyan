@@ -12,6 +12,10 @@ define C_ACCENT = "#E3B457"
 define C_COOL = "#7FB3D5"
 define C_BG = "#0B0D10"
 
+# ---------- 图标系统 v1 ----------
+# 素材：gui_gen/icons/*.png（Ardot 导出，源 64 栅格 / 线稿 4px / 琥珀 #E3B457，导出于 2x = 128px）
+define ICON_ZOOM = 48.0 / 128.0
+
 
 ################################################################################
 # 标题画面
@@ -95,13 +99,19 @@ style title_button_text:
 # 模式选择（3×2 卡片网格）
 ################################################################################
 
-screen mode_card(idx, mtitle, mdesc, act):
+screen mode_card(idx, mtitle, mdesc, act, icon=None):
     button:
         style "mode_card"
         action act
 
+        if icon:
+            add icon:
+                xpos 26
+                yalign 0.5
+                zoom ICON_ZOOM
+
         vbox:
-            xpos 34
+            xpos 88
             yalign 0.5
             spacing 8
 
@@ -142,12 +152,12 @@ screen mode_select_menu():
         yalign 0.53
         spacing 24
 
-        use mode_card("01", "主线模式", "罗德岛本舰 · 章节式主线", Return("main"))
-        use mode_card("02", "角色剧情", "干员个人线 · 深入其人", Return("chara"))
-        use mode_card("03", "干员档案", "干员资料库 · 建设中", Return("archive"))
-        use mode_card("04", "故事集", "短篇与外传 · 建设中", Return("collection"))
-        use mode_card("05", "时间线", "泰拉大事记 · 建设中", Return("timeline"))
-        use mode_card("06", "正在开发", "版本路线图 · 敬请期待", Return("dev"))
+        use mode_card("01", "主线模式", "罗德岛本舰 · 章节式主线", Return("main"), "gui_gen/icons/icon_main.png")
+        use mode_card("02", "角色剧情", "干员个人线 · 深入其人", Return("chara"), "gui_gen/icons/icon_chara.png")
+        use mode_card("03", "干员档案", "干员资料库 · 建设中", Return("archive"), "gui_gen/icons/icon_archive.png")
+        use mode_card("04", "故事集", "短篇与外传 · 建设中", Return("collection"), "gui_gen/icons/icon_collection.png")
+        use mode_card("05", "时间线", "泰拉大事记 · 建设中", Return("timeline"), "gui_gen/icons/icon_timeline.png")
+        use mode_card("06", "正在开发", "版本路线图 · 敬请期待", Return("dev"), "gui_gen/icons/icon_dev.png")
 
     textbutton "← 返回标题":
         style "mode_back"

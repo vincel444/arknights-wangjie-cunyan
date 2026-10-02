@@ -17,6 +17,11 @@ gen_log.txt
 proc_check.txt
 git_status.txt
 tools/check_report.txt
+tools/_git.txt
+tools/_lint.txt
+tools/_diag.txt
+tools/_saveshots/
+icon_probe.txt
 
 # Python 工具缓存
 tools/__pycache__/
